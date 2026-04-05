@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import type { AxiosInstance } from 'axios';
+import axios, { type AxiosInstance } from 'axios';
 
 import { API_CREDENTIALS, SKIP_INTERCEPTOR_HEADER } from '@/config/constant';
 import type { APISIXType } from '@/types/schema/apisix';
@@ -37,7 +37,7 @@ export const getCredentialListReq = (req: AxiosInstance, params: WithUsername) =
     .then((v) => v.data)
     .catch((e) => {
       // 404 means credentials is empty
-      if (e.response.status === 404) {
+      if (axios.isAxiosError(e) && e.response?.status === 404) {
         const res: APISIXListResponse<APISIXType['Credential']> = {
           total: 0,
           list: [],
